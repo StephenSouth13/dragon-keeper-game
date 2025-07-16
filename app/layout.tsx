@@ -27,7 +27,30 @@ export const metadata: Metadata = {
   icons: {
     icon: "/dragon-icon.png", // Favicon
   },
-    generator: 'v0.dev'
+    generator: 'Dung & Long',
+    applicationName: 'Dragon Keeper',
+    keywords: ['game', 'nuôi rồng', 'chiến đấu', 'rồng', 'game online'],
+    authors: [
+      {
+        name: 'Dung & Long',
+      }],
+    creator: 'Dung & Long',
+    openGraph: {
+      title: 'Dragon Keeper - Thế giới nuôi rồng kỳ ảo',
+      description: 'Nuôi dưỡng, huấn luyện và chiến đấu với những chú rồng của bạn!',
+      url: 'https://dragon-keeper-game.vercel.app',
+      siteName: 'Dragon Keeper',
+      images: [
+        {
+          url: '/dragon-og-image.png', // Open Graph image
+          width: 1200,
+          height: 630,
+          alt: 'Dragon Keeper - Thế giới nuôi rồng kỳ ảo',
+        },
+      ],
+      locale: 'vi_VN',
+      type: 'website',
+    },
 }
 
 export default function RootLayout({
