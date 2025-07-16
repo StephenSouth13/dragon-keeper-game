@@ -1,8 +1,17 @@
-"use client"
+"use client";
 
-import { Calendar, Home, Inbox, Settings, ChevronDown, Gem, Swords, Store } from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import {
+  Calendar,
+  Home,
+  Inbox,
+  Settings,
+  ChevronDown,
+  Gem,
+  Swords,
+  Store,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   Sidebar,
@@ -16,10 +25,15 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
   SidebarFooter,
-} from "@/components/ui/sidebar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useGame } from "@/lib/game-context"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+} from "@/components/ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useGame } from "@/lib/game-context";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 // Menu items.
 const mainMenuItems = [
@@ -43,17 +57,21 @@ const mainMenuItems = [
     url: "/shop",
     icon: Store,
   },
-]
+];
 
 export function AppSidebar() {
-  const pathname = usePathname()
-  const { player } = useGame()
+  const pathname = usePathname();
+  const { player } = useGame();
 
   return (
     <Sidebar>
       <SidebarHeader>
         <Link href="/" className="flex items-center gap-2 p-2">
-          <img src="/placeholder.svg?height=32&width=32" alt="Dragon Keeper Logo" className="h-8 w-8" />
+          <img
+            src="dragon/DragonRed.png"
+            alt="Dragon Keeper Logo"
+            className="h-8 w-8"
+          />
           <span className="font-magic text-xl font-bold text-fantasy-gold text-glow shadow-fantasy-gold/50">
             Dragon Keeper
           </span>
@@ -65,7 +83,10 @@ export function AppSidebar() {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
                   <Avatar className="h-6 w-6">
-                    <AvatarImage src={player.avatar || "/placeholder.svg"} alt={player.name} />
+                    <AvatarImage
+                      src={player.avatar || "/placeholder.svg"}
+                      alt={player.name}
+                    />
                     <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <span className="truncate">{player.name}</span>
@@ -145,8 +166,10 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <p className="text-xs text-muted-foreground text-center">&copy; {new Date().getFullYear()} Dragon Keeper.</p>
+        <p className="text-xs text-muted-foreground text-center">
+          &copy; {new Date().getFullYear()} Dragon Keeper.
+        </p>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
