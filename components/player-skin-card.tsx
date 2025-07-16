@@ -25,13 +25,13 @@ export function PlayerSkinCard({ skin }: PlayerSkinCardProps) {
       buyItem(skin.id) // This will deduct coins
       setIsBought(true)
       toast({
-        title: "Mua Skin thành công!",
+        title: "Mua Skin thành công !",
         description: `Bạn đã mua skin ${skin.name}.`,
         variant: "success",
       })
     } else {
       toast({
-        title: "Không đủ Coin",
+        title: "Không đủ Coin rồi chiến binh à",
         description: "Bạn không có đủ tiền để mua skin này.",
         variant: "destructive",
       })

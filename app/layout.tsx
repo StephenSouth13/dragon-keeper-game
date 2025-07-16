@@ -11,6 +11,7 @@ import { GameProvider } from "@/lib/game-context"
 import { AppFooter } from "@/components/app-footer"
 import { Chatbot } from "@/components/chatbot"
 import { AudioPlayer } from "@/components/audio-player"
+import { ClientOnly } from "@/components/client-only" // Import ClientOnly component
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -64,12 +65,10 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <GameProvider>
             <SidebarProvider defaultOpen={true}>
-              {" "}
-              {/* Sidebar is open by default [^4] */}
+              {/* Removed unnecessary whitespace here */}
               <AppSidebar />
               <SidebarInset>
-                {" "}
-                {/* Wrap main content in SidebarInset for proper layout [^4] */}
+                {/* Removed unnecessary whitespace here */}
                 <main className="flex-1 p-4 md:p-6 lg:p-8">
                   <SidebarTrigger className="mb-4 md:hidden" /> {/* Mobile trigger */}
                   {children}
@@ -78,8 +77,11 @@ export default function RootLayout({
               </SidebarInset>
             </SidebarProvider>
           </GameProvider>
-          <Chatbot />
-          <AudioPlayer />
+          {/* Wrap Chatbot and AudioPlayer with ClientOnly to prevent hydration issues */}
+          <ClientOnly>
+            <Chatbot />
+            <AudioPlayer />
+          </ClientOnly>
           <Toaster />
         </ThemeProvider>
       </body>

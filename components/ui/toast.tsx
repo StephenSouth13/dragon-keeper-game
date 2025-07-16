@@ -32,6 +32,9 @@ const toastVariants = cva(
         default: "border bg-background text-foreground",
         destructive:
           "destructive group border-destructive bg-destructive text-destructive-foreground",
+        // Thêm các variant 'success' và 'warning' ở đây
+        success: "border-green-500 bg-green-500 text-white", // Ví dụ màu xanh lá cây cho success
+        warning: "border-yellow-500 bg-yellow-500 text-black", // Ví dụ màu vàng cho warning
       },
     },
     defaultVariants: {

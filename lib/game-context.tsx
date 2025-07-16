@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react"
 import { toast } from "@/hooks/use-toast"
+import { LucideIcon } from "lucide-react" // Đây là type hoặc component cho các icon Lucide
+import Image from "next/image" // Import component Image từ Next.js
 
 // --- Types ---
 export type DragonSpecies = "Fire" | "Ice" | "Dark" | "Light" | "Nature"
@@ -183,7 +185,7 @@ const MOCK_DRAGONS: Dragon[] = [
     currentHp: 90,
     attack: 20,
     defense: 15,
-    image: "/placeholder.svg?height=200&width=200",
+    image: "/dragon/Ignis.png",
     status: "Healthy",
     description: "A fiery dragon, born from volcanic ash. Its breath can melt steel.",
     evolutionLevel: 10,
@@ -204,7 +206,7 @@ const MOCK_DRAGONS: Dragon[] = [
     currentHp: 80,
     attack: 18,
     defense: 12,
-    image: "/placeholder.svg?height=200&width=200",
+    image: "/dragon/Frostwing.png",
     status: "Healthy",
     description: "A majestic ice dragon, capable of freezing entire lakes with a single roar.",
     evolutionLevel: 8,
@@ -224,7 +226,7 @@ const MOCK_DRAGONS: Dragon[] = [
     currentHp: 110,
     attack: 25,
     defense: 18,
-    image: "/placeholder.svg?height=200&width=200",
+    image: "/dragon/Shadowfang.png",
     status: "Healthy",
     description: "A stealthy dragon of the night, its movements are as silent as shadows.",
     evolutionLevel: 12,
@@ -462,15 +464,21 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       setDragons((prevDragons) =>
         prevDragons.map((dragon) => {
           const newCooldowns = { ...dragon.cooldowns }
-          for (const key in newCooldowns) {
-            if (typeof newCooldowns[key] === "number") {
-              newCooldowns[key] = Math.max(0, newCooldowns[key] - 1)
-            } else if (typeof newCooldowns[key] === "object") {
-              for (const skillId in newCooldowns[key]) {
-                newCooldowns[key][skillId] = Math.max(0, newCooldowns[key][skillId] - 1)
-              }
+
+          // Handle direct number cooldowns explicitly
+          newCooldowns.feed = Math.max(0, newCooldowns.feed - 1)
+          newCooldowns.train = Math.max(0, newCooldowns.train - 1)
+          newCooldowns.evolve = Math.max(0, newCooldowns.evolve - 1)
+
+          // Handle skill cooldowns if they exist
+          if (newCooldowns.skill) {
+            const updatedSkillCooldowns: Record<string, number> = {}
+            for (const skillId in newCooldowns.skill) {
+              updatedSkillCooldowns[skillId] = Math.max(0, newCooldowns.skill[skillId] - 1)
             }
+            newCooldowns.skill = updatedSkillCooldowns
           }
+
           // Regenerate energy
           const newEnergy = Math.min(dragon.maxEnergy, dragon.currentEnergy + 5) // 5 energy per second
           return {
@@ -494,7 +502,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         toast({
           title: "Chúc mừng!",
           description: `Bạn đã lên cấp ${newLevel}!`,
-          variant: "success",
+          variant: "success", // Requires 'success' to be added to ToastProps variant type
         })
       }
       return { ...prevPlayer, xp: newXp, level: newLevel }
@@ -509,7 +517,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
           toast({
             title: "Cho ăn thành công!",
             description: `${dragon.name} đã hồi phục 20 HP.`,
-            variant: "success",
+            variant: "success", // Requires 'success' to be added to ToastProps variant type
           })
           return {
             ...dragon,
@@ -541,13 +549,13 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
               toast({
                 title: "Huấn luyện thành công!",
                 description: `${dragon.name} đã lên cấp ${newLevel}!`,
-                variant: "success",
+                variant: "success", // Requires 'success' to be added to ToastProps variant type
               })
             } else {
               toast({
                 title: "Huấn luyện thành công!",
                 description: `${dragon.name} đã nhận được ${xpGain} XP.`,
-                variant: "success",
+                variant: "success", // Requires 'success' to be added to ToastProps variant type
               })
             }
 
@@ -598,7 +606,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
             toast({
               title: "Tiến hóa thành công!",
               description: `${dragon.name} đã tiến hóa thành ${evolvedDragon.name}!`,
-              variant: "success",
+              variant: "success", // Requires 'success' to be added to ToastProps variant type
             })
             updatePlayerXP(100) // Player gains significant XP for evolution
             return evolvedDragon
@@ -607,19 +615,19 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
               toast({
                 title: "Không thể tiến hóa",
                 description: `${dragon.name} đang trong thời gian hồi chiêu tiến hóa.`,
-                variant: "warning",
+                variant: "warning", // Requires 'warning' to be added to ToastProps variant type
               })
             } else if (dragon.level < dragon.evolutionLevel) {
               toast({
                 title: "Không thể tiến hóa",
                 description: `${dragon.name} cần đạt cấp ${dragon.evolutionLevel} để tiến hóa.`,
-                variant: "warning",
+                variant: "warning", // Requires 'warning' to be added to ToastProps variant type
               })
             } else if (!dragon.nextEvolutionId) {
               toast({
                 title: "Không thể tiến hóa",
                 description: `${dragon.name} không có dạng tiến hóa tiếp theo.`,
-                variant: "warning",
+                variant: "warning", // Requires 'warning' to be added to ToastProps variant type
               })
             }
           }
@@ -682,7 +690,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         toast({
           title: "Mua thành công!",
           description: `Bạn đã mua ${item.name} và nhận được một chú rồng mới!`,
-          variant: "success",
+          variant: "success", // Requires 'success' to be added to ToastProps variant type
         })
       } else if (item.type === "skill") {
         // For simplicity, assume skill items teach a skill to the first dragon
@@ -699,7 +707,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
           toast({
             title: "Mua thành công!",
             description: `Bạn đã học được kỹ năng ${item.name}!`,
-            variant: "success",
+            variant: "success", // Requires 'success' to be added to ToastProps variant type
           })
         } else {
           toast({
@@ -713,26 +721,26 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         toast({
           title: "Mua thành công!",
           description: `Bạn đã mua skin rồng ${item.name}.`,
-          variant: "success",
+          variant: "success", // Requires 'success' to be added to ToastProps variant type
         })
       } else if (item.type === "player_skin") {
         // Logic to add skin to player's inventory (not implemented yet)
         toast({
           title: "Mua thành công!",
           description: `Bạn đã mua skin nhân vật ${item.name}.`,
-          variant: "success",
+          variant: "success", // Requires 'success' to be added to ToastProps variant type
         })
       } else if (item.type === "gacha_roll") {
         toast({
           title: "Mua thành công!",
           description: `Bạn đã mua một lượt quay gacha.`,
-          variant: "success",
+          variant: "success", // Requires 'success' to be added to ToastProps variant type
         })
       } else {
         toast({
           title: "Mua thành công!",
           description: `Bạn đã mua ${item.name}.`,
-          variant: "success",
+          variant: "success", // Requires 'success' to be added to ToastProps variant type
         })
       }
     },
@@ -774,7 +782,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     toast({
       title: "Quay Gacha thành công!",
       description: `Bạn đã nhận được một chú rồng mới: ${newDragon.name}!`,
-      variant: "success",
+      variant: "success", // Requires 'success' to be added to ToastProps variant type
     })
     return newDragon
   }, [player.coins])
@@ -809,7 +817,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
             toast({
               title: "Trang bị Skin thành công!",
               description: `${dragon.name} đã trang bị skin ${skin?.name || "mặc định"}.`,
-              variant: "success",
+              variant: "success", // Requires 'success' to be added to ToastProps variant type
             })
 
             return {
@@ -839,7 +847,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       toast({
         title: "Trang bị Skin thành công!",
         description: `Bạn đã trang bị skin nhân vật ${skin?.name || "mặc định"}.`,
-        variant: "success",
+        variant: "success", // Requires 'success' to be added to ToastProps variant type
       })
     },
     [playerSkins],
@@ -894,7 +902,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       newLog.push(`--- Lượt ${turn + 1} ---`)
       let playerDamageDealt = 0
       let playerHealAmount = 0
-      const playerEnergyCost = 0
+      // const playerEnergyCost = 0 // This variable was declared but not used, removed.
       let playerSkillUsed: Skill | undefined
 
       if (action === "attack") {
@@ -1019,17 +1027,17 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         ...currentState,
         playerCurrentHp,
         opponentCurrentHp,
-        playerCurrentEnergy: Math.min(playerDragon.maxEnergy, playerCurrentEnergy + 10), // Player energy regen per turn
-        opponentCurrentEnergy: Math.min(opponentDragon.maxEnergy, opponentCurrentEnergy + 10), // Opponent energy regen per turn
+        playerCurrentEnergy,
+        opponentCurrentEnergy,
         turn: turn + 1,
         log: newLog,
         isBattleOver: false,
       }
     },
-    [updatePlayerXP, skills],
+    [skills, updatePlayerXP, setDragons, setPlayer], // Added dependencies for useCallback
   )
 
-  const contextValue = {
+  const value = {
     player,
     dragons,
     shopItems,
@@ -1048,7 +1056,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     performBattleAction,
   }
 
-  return <GameContext.Provider value={contextValue}>{children}</GameContext.Provider>
+  return <GameContext.Provider value={value}>{children}</GameContext.Provider>
 }
 
 export const useGame = () => {
