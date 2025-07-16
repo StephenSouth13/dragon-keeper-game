@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 10%; /* Dark background */
+    --foreground: 240 5% 95%; /* Light text */
+    --card: 240 8% 15%; /* Slightly lighter dark for cards */
+    --card-foreground: 240 5% 95%;
+    --popover: 240 8% 15%;
+    --popover-foreground: 240 5% 95%;
+    --primary: 260 80% 40%; /* Fantasy Purple */
+    --primary-foreground: 240 5% 95%;
+    --secondary: 340 80% 50%; /* Fantasy Red */
+    --secondary-foreground: 240 5% 95%;
+    --muted: 240 5% 25%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 200 80% 50%; /* Fantasy Blue */
+    --accent-foreground: 240 5% 95%;
+    --destructive: 0 80% 50%;
+    --destructive-foreground: 240 5% 95%;
+    --border: 240 5% 30%;
+    --input: 240 5% 20%;
+    --ring: 260 80% 40%; /* Primary color for ring */
+
+    --radius: 0.75rem;
+
+    /* Sidebar specific variables [^4] */
+    --sidebar-background: 240 10% 10%;
+    --sidebar-foreground: 240 5% 95%;
+    --sidebar-primary: 240 5% 95%;
+    --sidebar-primary-foreground: 240 10% 10%;
+    --sidebar-accent: 240 8% 15%;
+    --sidebar-accent-foreground: 240 5% 95%;
+    --sidebar-border: 240 5% 30%;
+    --sidebar-ring: 260 80% 40%;
+  }
+
+  .dark {
+    /* Already set up for dark theme by default */
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 5px var(--tw-shadow-color), 0 0 10px var(--tw-shadow-color);
+  }
+}
+
+body {
+  background: linear-gradient(135deg, hsl(240 15% 10%) 0%, hsl(260 20% 15%) 100%);
+  min-height: 100vh;
+  color: hsl(var(--foreground));
+  font-family: sans-serif; /* Default font */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-magic);
+}
