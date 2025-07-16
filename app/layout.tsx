@@ -39,7 +39,6 @@ export const metadata: Metadata = {
     openGraph: {
       title: 'Dragon Keeper - Thế giới nuôi rồng kỳ ảo',
       description: 'Nuôi dưỡng, huấn luyện và chiến đấu với những chú rồng của bạn!',
-      url: 'https://dragon-keeper-game.vercel.app',
       siteName: 'Dragon Keeper',
       images: [
         {
@@ -63,26 +62,24 @@ export default function RootLayout({
     <html lang="vi" suppressHydrationWarning>
       <body className={`${inter.className} ${cinzel.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <GameProvider>
-            <SidebarProvider defaultOpen={true}>
-              {/* Removed unnecessary whitespace here */}
-              <AppSidebar />
-              <SidebarInset>
-                {/* Removed unnecessary whitespace here */}
-                <main className="flex-1 p-4 md:p-6 lg:p-8">
-                  <SidebarTrigger className="mb-4 md:hidden" /> {/* Mobile trigger */}
-                  {children}
-                </main>
-                <AppFooter />
-              </SidebarInset>
-            </SidebarProvider>
-          </GameProvider>
-          {/* Wrap Chatbot and AudioPlayer with ClientOnly to prevent hydration issues */}
-          <ClientOnly>
-            <Chatbot />
-            <AudioPlayer />
-          </ClientOnly>
-          <Toaster />
+          <AudioPlayer> {/* 👈 Bọc toàn bộ bên trong AudioPlayer */}
+            <GameProvider>
+              <SidebarProvider defaultOpen={true}>
+                <AppSidebar />
+                <SidebarInset>
+                  <main className="flex-1 p-4 md:p-6 lg:p-8">
+                    <SidebarTrigger className="mb-4 md:hidden" />
+                    {children}
+                  </main>
+                  <AppFooter />
+                </SidebarInset>
+              </SidebarProvider>
+            </GameProvider>
+            <ClientOnly>
+              <Chatbot />
+            </ClientOnly>
+            <Toaster />
+          </AudioPlayer>
         </ThemeProvider>
       </body>
     </html>
